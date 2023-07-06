@@ -1,0 +1,59 @@
+// MAKEHELP.BAT generated Help Map file.  Used by FOLDIT.HPJ.
+
+// Commands (ID_* and IDM_*)
+HID_OPTIONS_FOLDMARKERS                 0x18000
+HID_OPTIONS_FONT                        0x18003
+HID_NAVIGATE_ENTERFOLD                  0x18004
+HID_NAVIGATE_EXITFOLD                   0x18005
+HID_NAVIGATE_ENTERSELECTEDFOLD          0x18006
+HID_OPTIONS_LANGUAGES                   0x18007
+HID_EDIT_INSERTFOLD                     0x18008
+HID_FOLD_CREATE                         0x1800A
+HID_FOLD_DELETE                         0x1800B
+HID_FOLD_RIP                            0x1800C
+HID_EDIT_DELETELINE                     0x1800E
+HID_FOLD_UNFOLD                         0x1800F
+HID_OPTIONS_EDITING                     0x18010
+HID_TOOLS_COMMENTFOLD                   0x18011
+HID_OPTIONS_NAVIGATION                  0x18012
+HID_OPTIONS_FOLDPRESENTATION            0x18013
+HID_FILE_OPENREFERENCE                  0x18014
+HID_EDIT_CUTLINE                        0x18015
+HID_EDIT_COPYLINE                       0x18016
+HID_EDIT_PASTELINE                      0x18017
+HID_EDIT_DELETE                         0x18018
+HID_DEVTEST_SHOEINTERNALPASTEBUFFER     0x18019
+HID_DEBUG_DISPLAYSELECTEDTEXTPARAMETERS 0x1801A
+HID_TOOLS_TEXTTOFOLD                    0x1801B
+HID_HELP_TUTORIAL                       0x1801C
+HID_EDIT_RESTORE                        0x1801E
+HID_EDIT_SEARCH                         0x1801F
+HID_EDIT_SEARCHFORNEXT                  0x18020
+HID_INDICATOR_LANG                      0x1E706
+HID_INDICATOR_LINE                      0x1E707
+HID_INDICATOR_COL                       0x1E708
+HID_INDICATOR_RED                       0x1E709
+
+// Prompts (IDP_*)
+HIDP_BUSY                               0x30064
+
+// Resources (IDR_*)
+HIDR_MAINFRAME                          0x20002
+HIDR_FOLDITTYPE                         0x20003
+
+// Dialogs (IDD_*)
+HIDD_ABOUTBOX                           0x20064
+HIDD_FOLDMARKERS                        0x20065
+HIDD_SELLANG                            0x20065
+HIDD_EDITSTYLE                          0x20066
+HIDD_EDITLANG                           0x20066
+HIDD_NAVIGATION                         0x20069
+HIDD_FOLDPRESENTATION                   0x2006B
+HIDD_PASTELIST                          0x2006E
+HIDD_FVIEW                              0x2006F
+HIDD_SEARCH                             0x20071
+HIDD_SPLASH                             0x20073
+HIDD_TOOLBAR                            0x2007B
+
+// Frame Controls (IDW_*)
+HIDW_COMBO                              0x500DF
