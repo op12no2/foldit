@@ -4,4 +4,5 @@ foldit is a folding editor inspired by the editor that was integrated into the I
 
 Easiest to navgate is using the numeric keypad.
 
-Windows binary in the repo.
+Windows binary above. Download together with foldit.ini.
+
