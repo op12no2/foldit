@@ -1,0 +1,185 @@
+
+'foldit\foldit.top' - FoldIt! navigation file
+'foldit\foldit.his' - RCS history
+
+'foldit\foldit.tbd' - ToDo list
+
+'foldit\foldit.sln'
+'foldit\foldit.ncb'
+'foldit\foldit.vcproj'
+
+{{{  source
+
+{{{  app
+
+'foldit\foldit.cpp'
+'foldit\foldit.h'
+
+'foldit\mainfrm.cpp'
+'foldit\mainfrm.h'
+
+}}}
+{{{  doc
+
+'foldit\ffile.cpp'
+'foldit\ffile.h'
+
+'foldit\foldidoc.cpp'
+'foldit\foldidoc.h'
+
+}}}
+{{{  view
+
+'foldit\foldivw.cpp'
+'foldit\foldivw.h'
+
+}}}
+{{{  fold
+
+'foldit\foldline.cpp'
+'foldit\foldline.h'
+
+'foldit\textline.cpp'
+'foldit\textline.h'
+
+'foldit\linelist.cpp'
+'foldit\linelist.h'
+
+'foldit\line.cpp'
+'foldit\line.h'
+
+}}}
+{{{  dialog
+
+'foldit\miscopts.cpp'
+'foldit\miscopts.h'
+
+'foldit\editlang.cpp'
+'foldit\editlang.h'
+
+'foldit\foldpres.cpp'
+'foldit\foldpres.h'
+
+'foldit\sellang.cpp'
+'foldit\sellang.h'
+
+'foldit\toolopti.cpp'
+'foldit\toolopti.h'
+
+'foldit\searchdl.cpp'
+'foldit\searchdl.h'
+
+'foldit\pastelis.cpp'
+'foldit\pastelis.h'
+
+'foldit\navigati.cpp'
+'foldit\navigati.h'
+
+}}}
+{{{  helper
+
+'foldit\language.cpp'
+'foldit\language.h'
+
+'foldit\helper.cpp'
+'foldit\helper.h'
+
+'foldit\inifile.cpp'
+'foldit\inifile.h'
+
+'foldit\splash.cpp'
+'foldit\splash.h'
+
+'foldit\splash2.cpp'
+'foldit\splash2.h'
+
+'foldit\langlst.cpp'
+'foldit\langlst.h'
+
+'foldit\sentence.cpp'
+'foldit\sentence.h'
+
+'foldit\tooltip.cpp'
+'foldit\tooltip.h'
+
+'foldit\popuptip.cpp'
+'foldit\popuptip.h'
+
+}}}
+
+}}}
+{{{  resource files
+
+'foldit\foldit.rc'
+'foldit\res\foldit.rc2'
+'foldit\resource.h'
+
+}}}
+{{{  images
+
+'foldit\res\foldidoc.ico'
+'foldit\res\foldit.ico'
+'foldit\res\splash.bmp'
+'foldit\res\cursora.cur'
+'foldit\res\cursorb.cur'
+'foldit\res\toolbar.bmp'
+'foldit\hlp\appexit.bmp'
+'foldit\hlp\bullet.bmp'
+'foldit\hlp\curarw2.bmp'
+'foldit\hlp\curarw4.bmp'
+'foldit\hlp\curhelp.bmp'
+'foldit\hlp\editcopy.bmp'
+'foldit\hlp\editcut.bmp'
+'foldit\hlp\editpast.bmp'
+'foldit\hlp\editundo.bmp'
+'foldit\hlp\filenew.bmp'
+'foldit\hlp\fileopen.bmp'
+'foldit\hlp\fileprnt.bmp'
+'foldit\hlp\filesave.bmp'
+'foldit\hlp\hlpsbar.bmp'
+'foldit\hlp\hlptbar.bmp'
+'foldit\hlp\scmax.bmp'
+'foldit\hlp\scmenu.bmp'
+'foldit\hlp\scmin.bmp'
+'foldit\hlp\fold.bmp'
+
+}}}
+{{{  help
+
+'foldit\foldit.hpj'
+'foldit\makehelp.bat'
+'foldit\hlp\foldit.hm'
+'foldit\hlp\afxcore.rtf'
+'foldit\hlp\afxolecl.rtf'
+'foldit\hlp\afxprint.rtf'
+
+}}}
+{{{  def file
+
+'foldit\foldit.def'
+
+}}}
+{{{  install
+
+'foldit\install.wse'
+
+}}}
+{{{  MFC core
+
+'foldit\stdafx.cpp'
+'foldit\stdafx.h'
+
+}}}
+{{{  executables
+
+'foldit\debug\foldit.exe'
+'foldit\foldit.exe'           --release version
+
+}}}
+{{{  ini
+
+'foldit\debug\foldit.ini'
+'foldit\release\foldit.ini'
+
+}}}
+

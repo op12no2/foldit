@@ -1,0 +1,648 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""res\\foldit.rc2""  // non-App Studio edited resources\r\n"
+    "\r\n"
+    "#include ""afxres.rc""  // Standard components\r\n"
+    "#include ""afxprint.rc""  // printing/print preview resources\r\n"
+    "#include ""afxolecl.rc""  // OLE Client resources\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "RES\\FOLDIT.ICO"
+IDR_FOLDITTYPE          ICON                    "RES\\FOLDIDOC.ICO"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "RES\\TOOLBAR.BMP"
+IDB_SPLASHWND           BITMAP                  "RES\\SPLASH.BMP"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New",                        ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Options"
+    BEGIN
+        MENUITEM "&Languages...",               ID_OPTIONS_LANGUAGES
+        MENUITEM "&Toolbar...",                 IDD_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR, CHECKED
+        MENUITEM "&Navigation...",              ID_OPTIONS_NAVIGATION
+        MENUITEM "Fold &Presentation...",       ID_OPTIONS_FOLDPRESENTATION
+        MENUITEM "&Miscellaneous...",           ID_OPTIONS_MISCELLANEOUS
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Contents...",                ID_HELP_INDEX
+        MENUITEM "&Using Help...",              ID_HELP_USING
+        MENUITEM SEPARATOR
+        MENUITEM "&About...",                   ID_APP_ABOUT
+    END
+END
+
+IDR_FOLDITTYPE MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New",                        ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "Open R&eference",             ID_FILE_OPENREFERENCE
+        MENUITEM "&Close\tCtrl+X",              ID_FILE_CLOSE
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW, GRAYED
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Restore\tCtrl+Q",            ID_EDIT_RESTORE
+        MENUITEM SEPARATOR
+        MENUITEM "C&ut\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "C&opy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "P&aste\tCtrl+V",              ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "Copy to clip&board\tCtrl+O",  ID_EDIT_COPYTOCLIPBOARD
+        MENUITEM "Paste from cli&pboard\tCtrl+P", ID_EDIT_PASTEFROMCLIPBOARD
+        MENUITEM SEPARATOR
+        MENUITEM "Cut Li&ne\tCtrl+Y or F3",     ID_EDIT_CUTLINE
+        MENUITEM "Cop&y Line\tCtrl+K or F4",    ID_EDIT_COPYLINE
+        MENUITEM "Paste at &start of line\tCtrl+B or F5", ID_EDIT_PASTELINE
+        MENUITEM SEPARATOR
+        MENUITEM "&Find First\tCtrl+F",         ID_EDIT_FINDFIRST
+        MENUITEM "Find &Next\tCtrl+G",          ID_EDIT_FINDNEXT
+    END
+    POPUP "Fo&ld"
+    BEGIN
+        MENUITEM "&Open\tHome (NumPad) or Ctrl+LeftArrow", ID_NAVIGATE_ENTERFOLD
+        MENUITEM "&Close\tPgUp (NumPad) or Ctrl+RightArrow", ID_NAVIGATE_EXITFOLD
+        MENUITEM "&Rip\tEnd (NumPad)",          ID_FOLD_RIP
+        MENUITEM SEPARATOR
+        MENUITEM "&Go To...",                   ID_NAVIGATE_ENTERSELECTEDFOLD
+        MENUITEM SEPARATOR
+        MENUITEM "&New\tCtrl+N",                ID_FOLD_CREATE
+        MENUITEM "&UnFold\tCtrl+U",             ID_FOLD_UNFOLD
+    END
+    POPUP "&Options"
+    BEGIN
+        MENUITEM "&Font...",                    ID_OPTIONS_FONT
+        MENUITEM "&Language...",                ID_OPTIONS_LANGUAGES
+        MENUITEM "&Toolbar...",                 IDD_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR, CHECKED
+        MENUITEM "&Navigation...",              ID_OPTIONS_NAVIGATION
+        MENUITEM "Fold &Presentation...",       ID_OPTIONS_FOLDPRESENTATION
+        MENUITEM "&Miscellaneous...",           ID_OPTIONS_MISCELLANEOUS
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&New View",                   ID_WINDOW_NEW
+        MENUITEM SEPARATOR
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+        MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
+        MENUITEM SEPARATOR
+        MENUITEM "X",                           ID_WINDOW_FINDSTRING
+    END
+    POPUP "&Tools"
+    BEGIN
+        MENUITEM "&Comment Fold",               ID_TOOLS_COMMENTFOLD
+        MENUITEM "Text To &Fold",               ID_TOOLS_TEXTTOFOLD
+        MENUITEM SEPARATOR
+        MENUITEM "Start Key &Recorder\tF6",     ID_TOOLS_STARTKEYRECORDER
+        MENUITEM "&Stop Key Recorder\tF7",      ID_TOOLS_STOPKEYRECORDER
+        MENUITEM "&Play Key Recording\tF8",     ID_TOOLS_PLAYKEYRECORDING
+        MENUITEM SEPARATOR
+        MENUITEM "Insert &Date and Signature\tCtrl+D", ID_TOOLS_INSERTDATE
+        MENUITEM "Insert &Title\tCtrl+T",       ID_TOOLS_INSERTTITLE
+        MENUITEM "Insert the Find-String\tCtrl+A", ID_TOOLS_INSERTFINDSTRING
+        MENUITEM "Insert Next Serial Number",   ID_TOOLS_INSERTNEXTSERIALNUMBER
+        MENUITEM SEPARATOR
+        MENUITEM "Indent &All Lines\tCtrl+R",   ID_TOOLS_INDENTALLLINES
+        MENUITEM "&Outdent All Lines\tCtrl+E",  ID_TOOLS_OUTDENTALLLINES
+        MENUITEM SEPARATOR
+        MENUITEM "Edit referenced task [n]\tPgDn (NumPad)", ID_TOOLS_EDITTASK
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Contents...",                ID_HELP_INDEX
+        MENUITEM "&Using Help...",              ID_HELP_USING
+        MENUITEM SEPARATOR
+        MENUITEM "&About...",                   ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_F1,          ID_HELP,                VIRTKEY, NOINVERT
+    VK_F1,          ID_CONTEXT_HELP,        VIRTKEY, SHIFT, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+END
+
+IDR_FOLDITTYPE ACCELERATORS 
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    "K",            ID_EDIT_COPYLINE,       VIRTKEY, CONTROL, NOINVERT
+    VK_F4,          ID_EDIT_COPYLINE,       VIRTKEY, NOINVERT
+    "O",            ID_EDIT_COPYTOCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    VK_F3,          ID_EDIT_CUTLINE,        VIRTKEY, NOINVERT
+    "Y",            ID_EDIT_CUTLINE,        VIRTKEY, CONTROL, NOINVERT
+    "F",            ID_EDIT_FINDFIRST,      VIRTKEY, CONTROL, NOINVERT
+    "G",            ID_EDIT_FINDNEXT,       VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_EDIT_PASTEFROMCLIPBOARD, VIRTKEY, CONTROL, NOINVERT
+    "B",            ID_EDIT_PASTELINE,      VIRTKEY, CONTROL, NOINVERT
+    VK_F5,          ID_EDIT_PASTELINE,      VIRTKEY, NOINVERT
+    "Q",            ID_EDIT_RESTORE,        VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FOLD_CREATE,         VIRTKEY, CONTROL, NOINVERT
+    "U",            ID_FOLD_UNFOLD,         VIRTKEY, CONTROL, NOINVERT
+    VK_LEFT,        ID_NAVIGATE_ENTERFOLD,  VIRTKEY, CONTROL, NOINVERT
+    "R",            ID_TOOLS_INDENTALLLINES, VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_TOOLS_INSERTDATE,    VIRTKEY, CONTROL, NOINVERT
+    "A",            ID_TOOLS_INSERTFINDSTRING, VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_TOOLS_INSERTNEXTSERIALNUMBER, VIRTKEY, CONTROL, NOINVERT
+    "T",            ID_TOOLS_INSERTTITLE,   VIRTKEY, CONTROL, NOINVERT
+    "E",            ID_TOOLS_OUTDENTALLLINES, VIRTKEY, CONTROL, NOINVERT
+    VK_F8,          ID_TOOLS_PLAYKEYRECORDING, VIRTKEY, NOINVERT
+    VK_F6,          ID_TOOLS_STARTKEYRECORDER, VIRTKEY, NOINVERT
+    VK_F7,          ID_TOOLS_STOPKEYRECORDER, VIRTKEY, NOINVERT
+    VK_F11,         ID_WINDOW_FINDSTRING,   VIRTKEY, NOINVERT
+    VK_RIGHT,       ID_NAVIGATE_EXITFOLD,   VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SELLANG DIALOG  0, 0, 225, 144
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Select Language"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,177,8,39,15
+    PUSHBUTTON      "Cancel",IDCANCEL,177,31,39,15
+    PUSHBUTTON      "&Edit...",IDC_LEDIT,16,100,39,15
+    PUSHBUTTON      "&Delete",IDC_LDEL,65,100,39,15
+    PUSHBUTTON      "&New",IDC_LNEW,114,100,39,15
+    GROUPBOX        "&Languages",IDC_STATIC,6,6,157,117
+    LISTBOX         IDC_LANGUAGELIST,16,22,137,71,LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "&Load All",IDC_LINILOAD,177,55,39,15
+    PUSHBUTTON      "&Save All",IDC_LINISAVE,177,79,39,15
+END
+
+IDD_EDITLANG DIALOG  0, 0, 181, 165
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Edit Language Definition"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,135,6,40,15
+    PUSHBUTTON      "Cancel",IDCANCEL,135,28,40,15
+    LTEXT           "&Language",IDC_STATIC,74,6,48,9
+    EDITTEXT        IDC_NAME,6,6,61,12,ES_AUTOHSCROLL
+    LTEXT           "&Start Comment",IDC_STATIC,74,26,50,9
+    EDITTEXT        IDC_SCOM,28,26,39,12,ES_AUTOHSCROLL
+    LTEXT           "&End Comment",IDC_STATIC,74,46,45,8
+    EDITTEXT        IDC_ECOM,28,46,39,12,ES_AUTOHSCROLL
+    LTEXT           "&Tab Width",IDC_STATIC,74,106,46,8
+    EDITTEXT        IDC_TAB,41,106,26,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_FREF,6,126,61,12,ES_AUTOHSCROLL
+    LTEXT           "&File Ref Prefix",IDC_STATIC,74,126,55,11
+    EDITTEXT        IDC_SFOLD,28,66,39,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EFOLD,28,86,39,12,ES_AUTOHSCROLL
+    LTEXT           "&Begin fold mark",IDC_STATIC,74,66,50,8
+    LTEXT           "&Finish fold merk",IDC_STATIC,74,86,50,8
+    EDITTEXT        IDC_FEXT,6,146,61,12,ES_AUTOHSCROLL
+    LTEXT           "File E&xtension",IDC_STATIC,74,146,44,8
+END
+
+IDD_NAVIGATION DIALOG  0, 0, 253, 117
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Navigation"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,198,6,47,14
+    PUSHBUTTON      "Cancel",IDCANCEL,198,26,47,14
+    CONTROL         "Open references using open fold on text lines",IDC_NAVFOLDOPEN,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,27,160,10
+    CONTROL         "Auto close files using fold close at top-level",IDC_NAVFOLDCLOSE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,47,160,10
+    GROUPBOX        "Opening and Closing Folds",IDC_STATIC,10,10,177,97
+    CONTROL         "Always rip folds",IDC_ALWAYSRIP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,67,156,9
+    CONTROL         "Maximise Views",IDC_MAXIMISEVIEWS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,86,118,10
+END
+
+IDD_FOLDPRESENTATION DIALOG  0, 0, 209, 66
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Fold Presentation"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,156,7,45,14
+    PUSHBUTTON      "Cancel",IDCANCEL,156,29,45,14
+    LTEXT           "Fold &Prefix",IDC_STATIC,15,28,36,8
+    EDITTEXT        IDC_FOLDPRESPREFIX,60,28,58,13,ES_AUTOHSCROLL
+    GROUPBOX        "In Editor ",IDC_STATIC,6,9,140,47
+END
+
+IDD_TOOLBAR DIALOG  0, 0, 230, 155
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Toolbar Options"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Display Toolbar",IDC_TOOLBAR,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_GROUP | WS_TABSTOP,20,27,114,10
+    CONTROL         "Popup Hints",IDC_POPUP,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,20,38,114,10
+    CONTROL         "Status Line Fly By Hints",IDC_STATUSLINE,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,20,49,114,10
+    CONTROL         "Square",IDC_SQUARE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,28,97,35,10
+    CONTROL         "Rounded",IDC_ROUND,"Button",BS_AUTORADIOBUTTON,71,97,43,10
+    CONTROL         "3D",IDC_THREED,"Button",BS_AUTORADIOBUTTON,120,97,35,10
+    EDITTEXT        IDC_WAITTIME,64,123,37,12,ES_AUTOHSCROLL | WS_GROUP
+    DEFPUSHBUTTON   "OK",IDOK,177,12,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,177,33,50,14
+    GROUPBOX        "",IDC_STATIC,10,8,153,137
+    LTEXT           "Hint Delay",IDC_STATIC,25,123,37,12
+    LTEXT           "ms",IDC_STATIC,107,123,19,10
+    GROUPBOX        " Tip Box Style ",IDC_STATIC,16,82,142,30
+    CONTROL         "Use System Font",IDC_SYSTEMFONT,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,20,60,114,10
+END
+
+IDD_ABOUTBOX DIALOG  75, 60, 169, 85
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "About Foldit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,119,67,45,14,WS_GROUP
+    LTEXT           "Build dd/mm/yy hh:mm",IDC_AVAIL_MEM,15,37,86,8,NOT WS_GROUP
+    LTEXT           "Foldit version 1.0",ID_STATIC,15,8,119,8
+    LTEXT           "Copyright © Match-IT Ltd 1995 - 2005 ",ID_STATIC,15,22,154,8
+END
+
+IDD_PASTELIST DIALOG  0, 0, 281, 222
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Restore Folds and Text"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Select",IDOK,180,6,43,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,231,6,43,14
+    LISTBOX         IDC_PASTELIST,7,28,267,63,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    LTEXT           "Time   Overview",IDC_STATIC,6,17,98,10
+    EDITTEXT        IDC_PASTEVIEW,7,95,267,108,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL | WS_HSCROLL
+    LTEXT           "The selected fold/text will be placed in the internal buffer.  Paste with F5.",IDC_STATIC,7,209,268,10,WS_DISABLED
+END
+
+IDD_SEARCH DIALOG  0, 0, 185, 47
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Search (Primitive!)"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Search For:",IDC_STATIC,7,11,75,9
+    EDITTEXT        IDC_EDIT1,7,25,111,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,129,6,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,23,50,14
+END
+
+IDD_MISCOPTS DIALOG  0, 0, 241, 152
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Misc Options"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,134,135,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,189,135,50,14
+    CONTROL         "&Delete trailing blank lines in folds",IDC_DELFOLDTAILS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,4,141,13
+    EDITTEXT        IDC_SIGNATURE,107,21,40,12,ES_AUTOHSCROLL
+    LTEXT           "&Signature:",IDC_STATIC,6,21,39,9
+    LTEXT           "&Maximum restore buffer items:",IDC_STATIC,6,37,98,9
+    EDITTEXT        IDC_RESTORE,107,37,40,12,ES_AUTOHSCROLL
+    LTEXT           "&End of fold visual cue:",IDC_STATIC,6,54,96,8
+    EDITTEXT        IDC_ENDFOLDCUE,106,54,129,31,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL
+    EDITTEXT        IDC_SERIALNO,106,89,55,12,ES_AUTOHSCROLL
+    LTEXT           "Last serial &number:",IDC_STATIC,6,89,85,10
+    LTEXT           "Serial number &format string:",IDC_STATIC,6,106,95,12
+    EDITTEXT        IDC_SERIALFMT,106,109,121,12,ES_AUTOHSCROLL
+    LTEXT           "(Uses printf to display an int)",IDC_STATIC,6,117,94,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CURSORA             CURSOR                  "RES\\CURSORA.CUR"
+IDC_CURSORB             CURSOR                  "RES\\CURSORB.CUR"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDP_BUSY                "Server is still busy."
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Foldit"
+    IDR_FOLDITTYPE          "\nFoldit\nFoldIt Document\nAll Files (*.*)\n.*\nFolditFileType\nFOLDIT File Type"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Build 5/02/06 17:59"
+    AFX_IDS_IDLEMESSAGE     "For Help, press F1"
+    AFX_IDS_HELPMODEMESSAGE "Select an object on which to get Help"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+    ID_INDICATOR_LANG       "AAAAAAAAAA"
+    ID_INDICATOR_LINE       "999999"
+    ID_INDICATOR_COL        "999"
+    ID_INDICATOR_RED        "AAAAAAAAAAAAAAAAAAA"
+    ID_INDICATOR_WHO        "AAA"
+    ID_INDICATOR_LAST       "AAAAAAAAAAAAAAAAAAAAA"
+    ID_INDICATOR_DIRTY      "Ddddd"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document"
+    ID_FILE_OPEN            "Open an existing document"
+    ID_FILE_CLOSE           "Close the active document"
+    ID_FILE_SAVE            "Save the active document"
+    ID_FILE_SAVE_AS         "Save the active document with a new name"
+    ID_FILE_PAGE_SETUP      "Change the printing options"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options"
+    ID_FILE_PRINT           "Print the active document"
+    ID_FILE_PRINT_PREVIEW   "Display full pages"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright"
+    ID_APP_EXIT             "Quit the application; prompts to save documents"
+    ID_HELP_INDEX           "List Help topics"
+    ID_HELP_USING           "Display instructions about how to use help"
+    ID_CONTEXT_HELP         "Display help for clicked on buttons, menus and windows"
+    ID_HELP                 "Display help for current task or command"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane"
+    ID_PREV_PANE            "Switch back to the previous window pane"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_NEW           "Open another window for the active document at the current fold"
+    ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window"
+    ID_WINDOW_CASCADE       "Arrange windows so they overlap"
+    ID_WINDOW_TILE_HORZ     "Arrange windows as non-overlapping tiles"
+    ID_WINDOW_TILE_VERT     "Arrange windows as non-overlapping tiles"
+    ID_WINDOW_SPLIT         "Split the active window into panes"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection"
+    ID_EDIT_CLEAR_ALL       "Erase everything"
+    ID_EDIT_COPY            "Copy the selection and put it in the internal buffer"
+    ID_EDIT_CUT             "Cut the selection and put it in the internal buffer"
+    ID_EDIT_FIND            "Find the specified text"
+    ID_EDIT_PASTE           "Insert internal buffer contents at the caret"
+    ID_EDIT_PASTE_LINK      "Insert Clipboard contents and a link to its source"
+    ID_EDIT_PASTE_SPECIAL   "Insert Clipboard contents with options"
+    ID_EDIT_REPEAT          "Repeat the last action"
+    ID_EDIT_REPLACE         "Replace specific text with different text"
+    ID_EDIT_SELECT_ALL      "Select the entire document"
+    ID_EDIT_UNDO            "Open list of previous cuts (app-centric)"
+    ID_EDIT_REDO            "Redo the previously undone action"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar (app-centric)"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar (app-centric)"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_OLE_INSERT_NEW       "Insert new embedded object"
+    ID_OLE_EDIT_LINKS       "Edit linked objects"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_OLE_VERB_FIRST       "Activate embedded or linked object"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+    AFX_IDS_MDICHILD        "Activate this window"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_OPTIONS_FOLDMARKERS  "Select a language for this file and optionally edit language definitions"
+    Font                    "Select font for use in main edit area"
+    ID_OPTIONS_FONT         "Select font for use in main edit area (view-centric)"
+    ID_NAVIGATE_ENTERFOLD   "Open fold at caret (display child fold)"
+    ID_NAVIGATE_EXITFOLD    "Close the currently displayed fold (go to parent fold)"
+    ID_NAVIGATE_ENTERSELECTEDFOLD "Select and enter a fold"
+    ID_OPTIONS_LANGUAGES    "Select language for loaded file or edit language definitions (doc/app centric)"
+    ID_EDIT_INSERTFOLD      "Creates a empty fold and inserts it above the current line."
+    ID_FOLD_CREATE          "Create fold from selected text.  If no text selected an empty fold is created"
+    ID_FOLD_DELETE          "Delete fold at cursor"
+    ID_FOLD_RIP             "Rip off fold at caret in another window (display child fold)"
+    ID_EDIT_DELETELINE      "Delete whole line at caret"
+    ID_FOLD_UNFOLD          "Unfold the contents of fold at caret (merge child fold with parent)"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_OPTIONS_EDITING      "Change the general editing environment options (app-centric)"
+    ID_TOOLS_COMMENTFOLD    "Add comments to each line of the visible fold (recursive)"
+    ID_OPTIONS_NAVIGATION   "Configure behaviour when opening, closing folds etc. (app-centric)"
+    ID_OPTIONS_FOLDPRESENTATION 
+                            "Define strings used for presenting folds on the screen and in files (app-centric)"
+    ID_FILE_OPENREFERENCE   "Open the file contained within delimiters on the current line"
+    ID_EDIT_CUTLINE         "Cut whole line at caret to internal buffer"
+    ID_EDIT_COPYLINE        "Copy whole line at caret to internal buffer"
+    ID_EDIT_PASTELINE       "Insert internal buffer contents at start of line"
+    ID_EDIT_DELETE          "Delete (without undo) selected text"
+    ID_TOOLS_TEXTTOFOLD     "Create new fold and use text line at caret as title (view centric)"
+    ID_HELP_TUTORIAL        "Invoke folded tutorial (app-centric)"
+    ID_EDIT_RESTORE         "Restore previously cut text and folds"
+END
+
+STRINGTABLE 
+BEGIN
+    IDD_TOOLBAR             "Invoke Toolbar options dialog (app-centric)"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_DISK_SPACE_UNAVAIL  "Unavailable"
+    IDS_DISK_SPACE          "%lu KB Free"
+    IDS_MATH_COPR_NOTPRESENT "Not present"
+    IDS_MATH_COPR_PRESENT   "Present"
+    IDS_AVAIL_MEM           "%lu KB Free"
+    IDS_RESOURCE_FREE       "%u%% Free"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_TOOLS_STARTKEYRECORDER "Start recording a sequence of keystrokes"
+    ID_TOOLS_STOPKEYRECORDER "Step recording keystrokes"
+    ID_TOOLS_PLAYKEYRECORDING "Playback the recorded charanters"
+    ID_EDIT_COPYTOCLIPBOARD "Copy selected text to the clipboard"
+    ID_EDIT_PASTEFROMCLIPBOARD "Paste clipboard at the caret"
+    ID_TOOLS_INSERTDATE     "Insert the date and your signature at the caret position"
+    ID_TOOLS_INDENTALLLINES "Indent all lines of visible fold by one space character"
+    ID_TOOLS_OUTDENTALLLINES 
+                            "Outdent all lines of the visible fold by one space"
+    ID_EDIT_FINDNEXT        "Find next occurance of find string within Find-First context"
+    ID_EDIT_FINDFIRST       "Search for next occurance of search string and set Find-Next context"
+    ID_WINDOW_FINDSTRING    "Put focus on the find string in the toolbar"
+    ID_OPTIONS_MISCELLANEOUS "Miscellaneous options"
+    ID_TOOLS_INSERTTITLE    "Insert the fold title at the caret"
+    ID_TOOLS_INSERTFINDSTRING 
+                            "Insert the find-string currently in the combo box at teh caret"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_TOOLS_INSERTNEXTSERIALNUMBER 
+                            "Insert the next serial number at the caret (app-centric)"
+    ID_TOOLS_EDITTASK       "Edit referenced task [n]"
+END
+
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "res\foldit.rc2"  // non-App Studio edited resources
+
+#include "afxres.rc"  // Standard components
+#include "afxprint.rc"  // printing/print preview resources
+#include "afxolecl.rc"  // OLE Client resources
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,64 @@
+foldit 07/11/96 00:54:59 crj /co Created
+foldit 07/11/96 00:59:38 crj /ci
+foldit 07/11/96 00:59:53 crj /co Nothing
+foldit 07/11/96 23:38:40 crj /ci
+foldit 08/11/96 00:03:41 crj /co Fix tag tool
+foldit 08/11/96 18:15:56 crj /ci
+foldit 09/09/97 11:01:31 crj /co 32 bit
+foldit 29/01/99 12:54:09 crj /ci
+foldit 20/11/99 10:26:49 dcn /co Allow for long file names in associations
+                                 Improve file association handling (look in the registry)
+foldit 21/11/99 16:17:08 dcn /put
+foldit 21/11/99 17:42:03 dcn /put Look for associations in the registry before win.ini
+                                  Look for files in last red first
+foldit 27/11/99 14:47:33 dcn /ci
+foldit 01/12/99 18:47:57 dcn /co  Fix file creation problem
+foldit 01/12/99 20:14:18 dcn /ci
+foldit 01/02/00 19:19:39 dcn /co  Fix Y2K problem (i.e. showing 100 for the year instead of 00)
+foldit 01/02/00 20:39:03 dcn /ci
+foldit 22/08/01 12:09:49 dcn /co
+foldit 30/08/01 17:04:51 dcn /put
+foldit 30/08/01 20:15:52 dcn /!put
+foldit 05/09/01 17:13:42 dcn /!put
+foldit 05/09/01 17:15:27 dcn /!put
+foldit 05/09/01 17:16:33 dcn /!put
+foldit 05/09/01 17:18:48 dcn /!put
+foldit 05/09/01 17:19:21 dcn /!put
+foldit 07/09/01 10:06:07 dcn /put
+foldit 09/09/01 17:39:27 dcn /put
+foldit 09/09/01 17:39:56 dcn /ci
+foldit 18/04/03 23:43:49 dcn /co
+foldit 18/04/03 23:45:23 dcn /ci
+foldit 18/04/03 23:50:38 dcn /ci
+foldit 01/07/03 13:23:29 crj /co
+foldit 01/07/03 13:25:44 crj /!put
+foldit 01/07/03 13:40:44 crj /ci
+foldit 07/03/05 20:51:12 crj /co   [7223] Add edit task capability.
+foldit 07/03/05 20:55:41 crj /put
+foldit 07/03/05 21:33:09 crj /put
+foldit 07/03/05 22:14:52 crj /put
+foldit 07/03/05 22:38:26 crj /put
+foldit 07/03/05 22:57:48 crj /put
+foldit 08/03/05 13:58:21 crj /put
+foldit 14/10/05 15:42:28 crj /ci
+foldit 17/10/05 11:02:52 dcn /co  [9875] Add ability to fold on the basis of indentation level
+foldit 27/10/05 15:40:42 dcn /ci
+foldit 08/11/05 10:27:06 dcn /co  Ignore fold marks that have text before the mark on the same line
+foldit 08/11/05 10:43:58 dcn /ci
+foldit 11/11/05 10:18:33 dcn /co  Allow for lines of just spaces when folding on basis of indentation level
+foldit 11/11/05 10:24:19 dcn /ci
+foldit 29/11/05 14:29:48 crj /put
+foldit 29/11/05 14:36:01 crj /put
+foldit 29/11/05 15:01:26 crj /put
+foldit 30/11/05 12:08:16 crj /ci
+foldit 03/02/06 15:02:05 crj /co  Compile for VS2005, fix bugs, change to make247.com
+foldit 03/02/06 16:04:39 crj /!put
+foldit 16/02/06 12:45:05 crj /put
+foldit 21/03/06 16:31:15 crj /put
+foldit 21/03/06 18:24:35 crj /ci
+foldit 02/10/06 16:22:54 crj /put
+foldit 14/10/06 09:23:23 crj /ci
+foldit 17/10/06 10:35:35 dcn /co  Look further in file for language clues when open a file (was 128 chars, now 512)
+foldit 17/10/06 10:54:25 dcn /put Re-instate use of [####] for make247.co.uk
+                                  Remove duplicated \ in file names constructed by prepending m_Folder
+foldit 31/05/07 13:37:27 dcn /put

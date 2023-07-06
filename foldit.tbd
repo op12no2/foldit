@@ -1,0 +1,32 @@
+{{{  0002 19/8/96  Add tool to add comments to each line of fold
+
+}}}
+{{{  0003 23/5/95  Cursor at bottom of window is weird.
+
+}}}
+{{{  0005 23/5/95  File+New - cancel does not have desired effect.
+
+}}}
+{{{  0016 5/11/96  Make sure the last font selected goes in the ini file
+
+}}}
+{{{  0017 5/11/96  Diff font per fold with special commands at start of fold
+
+}}}
+{{{  0019 6/11/96  Fix block outdent - needs highlight from first TEXT char for some reason
+
+}}}
+{{{  0022 13/12/96 Delete after fold
+
+Can't presently use BackSpace on a blank line after a fold but can F3 -
+Inconsistent from a user POV?
+
+}}}
+{{{  0023 13/12/96 Unfolding etc
+
+leave title of fold as commented line after unfolding.
+add option to translate line into fold and leave line in fold
+or create empty fold and add tool to replicate title as line at cursor (better)
+
+}}}
+
