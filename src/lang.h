@@ -19,6 +19,7 @@ struct Language
     ustr sfold, efold;          //fold marks, usually {{{ and }}}
     ustr ref;                   //file reference prefix (informational)
     int  tab = 8;               //tab width used to expand tabs on load
+    int  indent = 0;            //Tab key width, 0 for the default
     std::vector<std::string> exts;  //extensions without dot, used when no markers found
 
     bool has_marks() const { return !sfold.empty() && sfold[0] > ' '; }
@@ -52,6 +53,7 @@ struct Config
     bool use_file_refs  = true;
     bool del_fold_tails = false;
     int  paste_len      = 100;
+    int  indent         = 2;    //Tab key width
 
     void load();                         //search the usual places
     void load_from(const Ini &ini);

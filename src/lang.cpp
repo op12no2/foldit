@@ -139,6 +139,7 @@ void Config::load_from(const Ini &ini)
             L.efold = decode(ini.get(L.name, "EndFoldMark"));
             L.ref   = decode(ini.get(L.name, "FileRef"));
             L.tab   = ini.get_int(L.name, "Tab", 8);
+            L.indent = ini.get_int(L.name, "Indent", 0);
             std::string ext = ini.get(L.name, "FileExt");
             for (auto &c : ext) if (c == ';' || c == ' ') c = ',';
             size_t p = 0;
@@ -167,6 +168,8 @@ void Config::load_from(const Ini &ini)
     use_file_refs  = ini.get_int("Defaults", "UseOpenFileRefs", 1) != 0;
     del_fold_tails = ini.get_int("Defaults", "DelFoldTails", 0) != 0;
     paste_len      = ini.get_int("Defaults", "PasteBufferLen", 100);
+    indent         = ini.get_int("Defaults", "Indent", 2);
+    if (indent < 1) indent = 2;
     if (paste_len < 2) paste_len = 2;
     default_lang   = ini.get("Defaults", "DefaultLanguage", "Plain Text");
 }

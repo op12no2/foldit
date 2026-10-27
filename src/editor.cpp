@@ -452,7 +452,7 @@ void Editor::key_char(char32_t c)
 void Editor::key_tab()
 {
     if (v.sel && !delete_sel()) return;
-    int tab = v.doc->lang->tab > 0 ? v.doc->lang->tab : 8;
+    int tab = v.doc->lang->indent > 0 ? v.doc->lang->indent : cfg.indent;
     insert_text(ustr(tab - v.cx % tab, U' '), true);
 }
 //}}}
