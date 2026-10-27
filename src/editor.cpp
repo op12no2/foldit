@@ -296,7 +296,7 @@ void Editor::undo()
 //{{{  selection and paste buffers
 //{{{  get_sel
 // a selection within one line is inline (characters); anything else is a
-// run of whole lines, not counting a last line selected from column 0
+// run of whole lines, including the lines at both ends
 Editor::Sel Editor::get_sel()
 {
     Sel s;
@@ -318,7 +318,6 @@ Editor::Sel Editor::get_sel()
         s.inl = s.x1 < s.x2;        //inside the title, else the whole fold line
         return s;
     }
-    if (s.x2 == 0) s.y2--;
     s.any = true;
     return s;
 }
