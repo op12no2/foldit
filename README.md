@@ -1,9 +1,46 @@
 # foldit
 
-foldit is a folding editor inspired by the editor that was integrated into the Inmos Transputer Development System (TDS). As such it can enter files(*) as if they were folds making navigation of whole directory structures easy. 
+foldit is a folding editor inspired by the editor that was integrated into the Inmos Transputer Development System (TDS). You don't open and close folds in place: you *enter* a fold, and the screen shows just the lines inside it. It can also enter files as if they were folds(*), which makes navigating whole directory structures easy.
 
-It's easiest to navgate folds using the numeric keypad.
+This is a terminal version for Linux/WSL. The original 1995 Windows MFC version is archived in [`mfc/`](mfc/). That folder includes a Windows binary, which needs `foldit.ini` beside it; its help file is missing.
 
-The code is very old and this is just an archive. It will probably be hard to compile given it uses an early version of MFC from 1995. But there is a Windows binary above. Download it together with foldit.ini. The help file is missing.
+(*) Entering a line that names a file in single or double quotes opens that file, and leaving its top level returns you to the line that referenced it. This makes it easy to reference other files from a comment.
 
-(*) If you click enter-fold on any line containing an item in single quotes, foldit will assume it's a file and try to open it in a new window.  This makes it easy to reference other files using a comment.
+## Build and install
+
+Needs a C++17 compiler and ncurses (`sudo apt install build-essential libncurses-dev`).
+
+    make            # builds ./foldit
+    make test       # parser round-trip tests
+    make install    # ~/.local/bin/foldit, and ~/.config/foldit/foldit.ini if not present
+
+    foldit file
+
+## Keys
+
+| Key | Action |
+| --- | --- |
+| Home / Ctrl+Left | enter fold, or open the file named in quotes on the line (elsewhere Home goes to the start of the line) |
+| PgUp / Ctrl+Right | exit fold; at the top of a file go back to the referencing file, or quit |
+| Ctrl+N | create fold (from the selected lines, or an empty one at the cursor column) |
+| Ctrl+U | unfold |
+| F3 / Ctrl+Y, F4 / Ctrl+K, F5 / Ctrl+B | cut / copy / paste line |
+| Ctrl+X, Ctrl+C, Ctrl+V | cut / copy / paste selection (Shift+arrows to select) |
+| Ctrl+Q | choose an earlier paste buffer |
+| Ctrl+O / Ctrl+P | copy to / paste from the Windows clipboard |
+| Ctrl+F / Ctrl+G | find / find next, in this fold and the folds inside it |
+| Ctrl+R / Ctrl+E | indent / outdent lines (selected, or all in the fold) |
+| Ctrl+D, Ctrl+T, Ctrl+A | insert date, fold title, find string |
+| Ctrl+Z | undo |
+| F6 / F7 / F8 | record keys / stop / play back |
+| Ctrl+S, F10, F1 | save, quit, help |
+
+## File format
+
+Folds are stored as comments, so files stay ordinary source:
+
+    //{{{  fold title
+    ...lines in the fold...
+    //}}}
+
+The comment characters depend on the language, and languages are defined in `foldit.ini`. On save, tabs are expanded to spaces, trailing white space is removed, and the file's line endings (LF or CRLF) are kept.
