@@ -27,13 +27,16 @@ Needs a C++17 compiler and ncurses (`sudo apt install build-essential libncurses
 | F3 / Ctrl+Y, F4 / Ctrl+K, F5 / Ctrl+B | cut / copy / paste line |
 | Ctrl+X, Ctrl+C, Ctrl+V | cut / copy / paste selection (Shift+arrows to select) |
 | Ctrl+Q | choose an earlier paste buffer |
-| Ctrl+O / Ctrl+P | copy to / paste from the Windows clipboard |
 | Ctrl+F / Ctrl+G | find / find next, in this fold and the folds inside it |
 | Ctrl+R / Ctrl+E | indent / outdent lines (selected, or all in the fold) |
 | Ctrl+D, Ctrl+T, Ctrl+A | insert date, fold title, find string |
 | Ctrl+Z | undo |
 | F6 / F7 / F8 | record keys / stop / play back |
 | Ctrl+S, F10, F1 | save, quit, help |
+
+## Clipboard
+
+Cuts and copies also go to the Windows clipboard (or, outside WSL, to the terminal's clipboard via OSC 52). Windows Terminal handles Ctrl+V itself, and foldit receives the result as a bracketed paste. If the pasted text is what foldit last copied, foldit pastes its own buffer, which keeps folds intact even when pasting into a file that uses different comment markers. Text from other programs is read as lines, and any fold markers in it become folds.
 
 ## File format
 

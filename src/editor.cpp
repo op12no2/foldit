@@ -5,6 +5,7 @@
 #define NCURSES_WIDECHAR 1
 #include <ncurses.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <climits>
 #include <cstdio>
@@ -20,6 +21,8 @@
 static const int KB = 0x1000000;
 #define K(x)    (KB + (x))
 #define CTRL(c) ((c) & 0x1f)
+// bracketed paste start and end, as defined with define_key()
+static const int PASTE_START = KEY_MAX + 1, PASTE_END = KEY_MAX + 2;
 //}}}
 //{{{  path helpers
 static std::string cwd()
@@ -374,7 +377,7 @@ void Editor::copy_sel(bool cut)
 }
 //}}}
 //{{{  push_paste
-void Editor::push_paste(std::unique_ptr<Paste> p)
+void Editor::push_paste(std::unique_ptr<Paste> p, bool to_clipboard)
 {
     char t[16];
     time_t now = time(nullptr);
@@ -386,6 +389,7 @@ void Editor::push_paste(std::unique_ptr<Paste> p)
     pastes.push_back(std::move(p));
     while ((int)pastes.size() > cfg.paste_len) pastes.pop_front();
     paste = pastes.back().get();
+    if (to_clipboard) mirror(paste);
 }
 //}}}
 //{{{  do_paste
@@ -888,28 +892,32 @@ void Editor::move_to(int y, int x, bool extend)
 //}}}
 //}}}
 //{{{  clipboard
-//{{{  to_clipboard
-// copy the selection, or the current line, to the Windows clipboard (folds
-// written out with their marks)
-void Editor::to_clipboard()
+// Every cut or copy is also put on the system clipboard, and the terminal's
+// own paste (Ctrl+V in Windows Terminal) arrives as a bracketed paste.  If
+// it is what we last put there we paste our own buffer, which keeps folds
+// exactly; otherwise it came from another program and is read as lines.
+//{{{  norm_paste
+// terminals turn newlines into CRs on paste
+static ustr norm_paste(const ustr &t)
 {
-    Sel s = get_sel();
-    ustr text;
-    if (s.any && s.inl)
+    ustr r;
+    for (size_t i = 0; i < t.size(); i++)
     {
-        Line *l = v.fold->kids[s.y1].get();
-        int off = l->fold ? title_start(l) : 0;
-        text = l->text.substr(s.x1 - off, s.x2 - s.x1);
+        if (t[i] != '\r') { r += t[i]; continue; }
+        r += U'\n';
+        if (i + 1 < t.size() && t[i + 1] == '\n') i++;
     }
-    else
-    {
-        LineList lines;
-        int a = s.any ? s.y1 : v.cy, b = s.any ? s.y2 : v.cy;
-        for (int i = a; i <= b; i++) lines.push_back(v.fold->kids[i]->clone());
-        text = write_lines(lines, *v.doc->lang);
-    }
+    while (!r.empty() && r.back() == '\n') r.pop_back();
+    return r;
+}
+//}}}
+//{{{  mirror
+void Editor::mirror(const Paste *p)
+{
+    ustr text = p->inline_text ? p->lines[0]->text : write_lines(p->lines, *v.doc->lang);
+    last_mirror = norm_paste(text);
 
-    if (system("command -v clip.exe >/dev/null 2>&1") == 0)
+    if (have_clip)
     {
         //clip.exe takes UTF-16 (a byte order mark would be pasted as a character)
         std::string u16;
@@ -926,55 +934,63 @@ void Editor::to_clipboard()
             }
             else { u16 += (char)(c & 0xFF); u16 += (char)(c >> 8); }
         }
-        FILE *p = popen("clip.exe >/dev/null 2>&1", "w");
-        if (!p) { msg = "can't run clip.exe"; return; }
-        fwrite(u16.data(), 1, u16.size(), p);
-        pclose(p);
-    }
-    else
-    {
-        //no Windows: ask the terminal to do it (OSC 52)
-        static const char *b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-        std::string in = encode(text), out;
-        for (size_t i = 0; i < in.size(); i += 3)
+        //clip.exe is slow to start, so run it in a detached grandchild
+        pid_t pid = fork();
+        if (pid == 0)
         {
-            unsigned n = (unsigned char)in[i] << 16;
-            if (i + 1 < in.size()) n |= (unsigned char)in[i + 1] << 8;
-            if (i + 2 < in.size()) n |= (unsigned char)in[i + 2];
-            out += b64[(n >> 18) & 63];
-            out += b64[(n >> 12) & 63];
-            out += i + 1 < in.size() ? b64[(n >> 6) & 63] : '=';
-            out += i + 2 < in.size() ? b64[n & 63] : '=';
+            if (fork() == 0)
+            {
+                FILE *f = popen("clip.exe >/dev/null 2>&1", "w");
+                if (f) { fwrite(u16.data(), 1, u16.size(), f); pclose(f); }
+            }
+            _exit(0);
         }
-        printf("\033]52;c;%s\a", out.c_str());
-        fflush(stdout);
+        if (pid > 0) waitpid(pid, nullptr, 0);
+        return;
     }
-    v.sel = false;
-    msg = "copied to clipboard";
+
+    //not on Windows: ask the terminal to do it (OSC 52)
+    static const char *b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    std::string in = encode(text), out;
+    for (size_t i = 0; i < in.size(); i += 3)
+    {
+        unsigned n = (unsigned char)in[i] << 16;
+        if (i + 1 < in.size()) n |= (unsigned char)in[i + 1] << 8;
+        if (i + 2 < in.size()) n |= (unsigned char)in[i + 2];
+        out += b64[(n >> 18) & 63];
+        out += b64[(n >> 12) & 63];
+        out += i + 1 < in.size() ? b64[(n >> 6) & 63] : '=';
+        out += i + 2 < in.size() ? b64[n & 63] : '=';
+    }
+    printf("\033]52;c;%s\a", out.c_str());
+    fflush(stdout);
 }
 //}}}
-//{{{  from_clipboard
-void Editor::from_clipboard()
+//{{{  read_paste
+// the text of a bracketed paste, after its start key has been read
+ustr Editor::read_paste()
 {
-    FILE *p = popen("powershell.exe -NoProfile -NonInteractive -Command "
-                    "\"[Console]::OutputEncoding=[System.Text.Encoding]::UTF8; Get-Clipboard -Raw\" "
-                    "</dev/null 2>/dev/null", "r");
-    if (!p) { msg = "can't read the Windows clipboard"; return; }
-    std::string raw;
-    char buf[4096];
-    size_t n;
-    while ((n = fread(buf, 1, sizeof(buf), p)) > 0) raw.append(buf, n);
-    int rc = pclose(p);
-    if (rc != 0 && raw.empty()) { msg = "can't read the Windows clipboard"; return; }
+    ustr t;
+    while (true)
+    {
+        int k = get_key();
+        if (k == K(PASTE_END)) return t;
+        if (k >= 0 && k < KB) t += (char32_t)k;
+    }
+}
+//}}}
+//{{{  paste_text
+void Editor::paste_text(const ustr &raw)
+{
+    ustr text = norm_paste(raw);
+    if (text.empty()) return;
+    if (paste && text == last_mirror)
+    {
+        do_paste(false);
+        return;
+    }
 
-    ustr text;
-    for (char32_t c : decode(raw))
-        if (c != '\r') text += c;
-    //powershell adds a newline of its own; text ending in another newline is
-    //whole lines, otherwise text without newlines is pasted inline
-    if (!text.empty() && text.back() == '\n') text.pop_back();
-    if (text.empty()) { msg = "clipboard is empty"; return; }
-
+    //from another program: text with no newlines goes inline, else lines
     std::unique_ptr<Paste> pp(new Paste);
     if (text.find(U'\n') == ustr::npos)
     {
@@ -983,12 +999,12 @@ void Editor::from_clipboard()
     }
     else
     {
-        if (text.back() != '\n') text += U'\n';
-        ParseResult r = parse_folds(text, *v.doc->lang);
+        ParseResult r = parse_folds(text + U'\n', *v.doc->lang);
         pp->lines = std::move(r.root->kids);
         for (auto &l : pp->lines) if (l->fold) l->parent = nullptr;
     }
-    push_paste(std::move(pp));
+    push_paste(std::move(pp), false);
+    last_mirror = text;
     do_paste(false);
 }
 //}}}
@@ -1069,8 +1085,6 @@ void Editor::handle(int k)
     if (k == CTRL('c'))                               { copy_sel(false); return; }
     if (k == CTRL('v'))                               { do_paste(false); return; }
     if (k == CTRL('q'))                               { paste_list(); return; }
-    if (k == CTRL('o'))                               { to_clipboard(); return; }
-    if (k == CTRL('p'))                               { from_clipboard(); return; }
     if (k == CTRL('r'))                               { indent_lines(1); return; }
     if (k == CTRL('e'))                               { indent_lines(-1); return; }
     if (k == CTRL('d'))                               { insert_date(); return; }
@@ -1102,6 +1116,7 @@ void Editor::handle(int k)
         return;
     }
     if (k == K(KEY_RESIZE)) return;
+    if (k == K(PASTE_START)) { paste_text(read_paste()); return; }
     //}}}
 
     if (k >= 32 && k < KB && k != 127) key_char((char32_t)k);
@@ -1217,6 +1232,13 @@ bool Editor::prompt(const std::string &label, ustr &text)
         else if (k == K(KEY_HOME)) pos = 0;
         else if (k == K(KEY_END)) pos = (int)text.size();
         else if (k == CTRL('u')) { text.clear(); pos = 0; }
+        else if (k == K(PASTE_START))
+        {
+            ustr t = norm_paste(read_paste());
+            t = t.substr(0, t.find(U'\n'));
+            text.insert(pos, t);
+            pos += (int)t.size();
+        }
         else if ((k == 127 || k == 8 || k == K(KEY_BACKSPACE)) && pos > 0) text.erase(--pos, 1);
         else if (k == K(KEY_DC) && pos < (int)text.size()) text.erase(pos, 1);
         else if (k >= 32 && k < KB && k != 127) text.insert(pos++, 1, (char32_t)k);
@@ -1290,6 +1312,7 @@ void Editor::paste_list()
     int c = choose("Paste buffers (newest first)", items, sel);
     if (c < 0) return;
     paste = pastes[pastes.size() - 1 - c].get();
+    mirror(paste);
     msg = "paste buffer: " + paste->label;
 }
 //}}}
@@ -1309,7 +1332,7 @@ void Editor::help()
         "  F4 / Ctrl+K         copy line         Ctrl+C   copy selection",
         "  F5 / Ctrl+B         paste line        Ctrl+V   paste",
         "  Ctrl+Q              choose an earlier paste buffer",
-        "  Ctrl+O / Ctrl+P     copy to / paste from the Windows clipboard",
+        "  (cuts and copies also go to the Windows clipboard; paste with Ctrl+V)",
         "  Shift+arrows        select            Esc      clear selection",
         "",
         "  Ctrl+F / Ctrl+G     find / find next (in this fold and folds inside it)",
@@ -1363,6 +1386,11 @@ void Editor::run()
     noecho();
     nonl();
     keypad(stdscr, TRUE);
+    define_key("\033[200~", PASTE_START);
+    define_key("\033[201~", PASTE_END);
+    have_clip = system("command -v clip.exe >/dev/null 2>&1") == 0;
+    printf("\033[?2004h");     //bracketed paste on
+    fflush(stdout);
     set_escdelay(25);
     if (has_colors())
     {
@@ -1380,6 +1408,8 @@ void Editor::run()
         if (recording && k != K(KEY_F(6)) && k != K(KEY_F(7)) && k != K(KEY_F(8))) macro.push_back(k);
         handle(k);
     }
+    printf("\033[?2004l");
+    fflush(stdout);
     endwin();
 }
 //}}}

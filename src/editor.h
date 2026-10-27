@@ -84,6 +84,8 @@ private:
     bool        quit = false;
     bool        recording = false, playing = false;
     std::vector<int> macro;
+    ustr        last_mirror;                       //normalised text last put on the clipboard
+    bool        have_clip = false;                 //clip.exe available
     Line       *typing_in = nullptr;               //for undo coalescing: line typed in
     Line       *prev_typing = nullptr;             //  by this key and the previous one
 
@@ -111,7 +113,7 @@ private:
     Sel  get_sel();
     bool delete_sel();
     void copy_sel(bool cut);
-    void push_paste(std::unique_ptr<Paste> p);
+    void push_paste(std::unique_ptr<Paste> p, bool to_clipboard = true);
     void do_paste(bool as_lines);
     //}}}
     //{{{  editing
@@ -137,8 +139,9 @@ private:
     void move_to(int y, int x, bool extend);
     //}}}
     //{{{  clipboard
-    void to_clipboard();
-    void from_clipboard();
+    void mirror(const Paste *p);
+    ustr read_paste();
+    void paste_text(const ustr &raw);
     //}}}
     //{{{  ui
     int  get_key();

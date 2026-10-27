@@ -23,6 +23,7 @@ There is no unit test for the UI. To check editor behaviour, drive it in tmux: `
 - `src/editor.*`: a single `View` shows one fold of one `Doc`, full screen. Entering a fold or a file reference pushes a `Place` onto `View::stack`, and exiting pops it. Exiting the root of a file returns to the referencing file (releasing the doc), or quits at the bottom of the stack. Display columns on fold lines are `indent + prefix + 2 spaces + title`; editing is only allowed in the indent area or the title (`title_start`).
 - Undo: `begin_edit()` is called before every modification. It snapshots the whole doc tree (typing on one line is coalesced). `undo()` re-resolves `Line*` pointers in the view and stack via index paths, so any new pointers into the tree must be handled there too.
 - Folds that the view or the stack is inside (`in_use`) must not be deleted, cut, unfolded or moved.
+- Clipboard: `push_paste` also `mirror`s each buffer to the system clipboard (detached `clip.exe`, else OSC 52) and remembers it in `last_mirror`. Bracketed paste is enabled and its markers are `define_key`'d to `PASTE_START`/`PASTE_END`; `paste_text` uses the internal buffer when the pasted text matches `last_mirror`, otherwise it parses the text as lines. Windows Terminal intercepts Ctrl+V, so this is how Ctrl+V works there.
 - `Language::tab` (`Tab=`) is only for expanding tab characters on load; the Tab key uses `Indent=` (per language, else `[Defaults] Indent`, default 2).
 
 ## Conventions
