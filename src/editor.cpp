@@ -1062,8 +1062,8 @@ void Editor::handle(int k)
     v.want = -1;
     if (k == K(KEY_NPAGE) || kn == "kNXT5") { move_to(v.cy + rows, v.cx, false); v.top += rows; return; }
     if (kn == "kPRV5") { move_to(v.cy - rows, v.cx, false); v.top = std::max(0, v.top - rows); return; }
-    if (kn == "kHOM5") { move_to(0, 0, false); return; }
-    if (kn == "kEND5") { move_to(n - 1, disp_len(v.fold->kids[n - 1].get()), false); return; }
+    if (kn == "kHOM5" || kn == "kUP5") { move_to(0, 0, false); return; }
+    if (kn == "kEND5" || kn == "kDN5") { move_to(n - 1, disp_len(v.fold->kids[n - 1].get()), false); return; }
     if (k == K(KEY_END)) { move_to(v.cy, len, false); return; }
     //}}}
     //{{{  folds
@@ -1342,7 +1342,8 @@ void Editor::help()
         "  F6 / F7 / F8        record keys / stop / play back",
         "",
         "  Ctrl+S              save              F10      quit",
-        "  PgDn, Ctrl+PgUp/PgDn  page            Ctrl+Home/End  top / bottom of fold",
+        "  PgDn, Ctrl+PgUp/PgDn  page",
+        "  Ctrl+Home/End, Ctrl+Up/Down  top / bottom of fold",
         "",
         "press any key",
     };
