@@ -22,12 +22,16 @@ Needs a C++17 compiler and ncurses (`sudo apt install build-essential libncurses
 | --- | --- |
 | Home / Ctrl+Left | enter fold, or open the file named in quotes on the line (elsewhere Home goes to the start of the line) |
 | PgUp / Ctrl+Right | exit fold; at the top of a file go back to the referencing file, or quit |
+| Ctrl+W | exit all folds and go to the top of the file |
+| PgDn, Ctrl+PgUp / Ctrl+PgDn | page down / up |
+| Ctrl+Home / Ctrl+End, Ctrl+Up / Ctrl+Down | top / bottom of fold |
 | Ctrl+N | create fold (from the selected lines, or an empty one at the cursor column) |
 | Ctrl+U | unfold |
 | F3 / Ctrl+Y, F4 / Ctrl+K, F5 / Ctrl+B | cut / copy / paste line |
 | Ctrl+X, Ctrl+C, Ctrl+V | cut / copy / paste selection (Shift+arrows to select) |
 | Ctrl+Q | choose an earlier paste buffer |
 | Ctrl+F / Ctrl+G | find / find next, in this fold and the folds inside it |
+| Ctrl+L | go to a line by its number in the file on disk (fold markers count), entering folds on the way |
 | Ctrl+R / Ctrl+E | indent / outdent lines (selected, or all in the fold) |
 | Ctrl+D, Ctrl+T, Ctrl+A | insert date, fold title, find string |
 | Ctrl+Z | undo |

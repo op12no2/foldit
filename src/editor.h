@@ -135,6 +135,8 @@ private:
     bool file_ref(std::string &path);
     void open_ref(const std::string &path, bool create);
     void find(bool first);
+    void goto_line();
+    void exit_all();
     void goto_fold(Line *target);
     void move_to(int y, int x, bool extend);
     //}}}
@@ -147,7 +149,7 @@ private:
     int  get_key();
     void handle(int k);
     void render();
-    bool prompt(const std::string &label, ustr &text);
+    bool prompt(const std::string &label, ustr &text, bool select = false);
     int  ask(const std::string &question, const std::string &answers);
     int  choose(const std::string &title, const std::vector<std::string> &items, int initial);
     void paste_list();

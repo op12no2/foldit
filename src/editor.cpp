@@ -812,7 +812,7 @@ void Editor::find(bool first)
     if (first)
     {
         ustr s = search;
-        if (!prompt("Find: ", s) || s.empty()) return;
+        if (!prompt("Find: ", s, true) || s.empty()) return;
         search    = s;
         find_doc  = v.doc;
         find_path = path_of(v.fold);
@@ -851,6 +851,55 @@ void Editor::find(bool first)
     v.sy  = hy;
     v.sx  = hx;
     v.cx  = hx + (int)pat.size();
+}
+//}}}
+//{{{  goto_line
+// Lines are numbered as in the file on disk, so fold markers count: a fold
+// takes one line for its start marker and one for its end.  Find line n
+// (0-based) under f; a marker line counts as the fold line it belongs to.
+static bool nth_line(Line *f, int &n, Line *&hf, int &hy)
+{
+    for (int i = 0; i < (int)f->kids.size(); i++)
+    {
+        Line *l = f->kids[i].get();
+        if (n-- == 0) { hf = f; hy = i; return true; }
+        if (!l->fold) continue;
+        if (nth_line(l, n, hf, hy)) return true;
+        if (n-- == 0) { hf = f; hy = i; return true; }
+    }
+    return false;
+}
+
+void Editor::goto_line()
+{
+    ustr s;
+    if (!prompt("Go to line: ", s) || s.empty()) return;
+    std::string e = encode(trim(s));
+    if (e.empty() || e.find_first_not_of("0123456789") != std::string::npos) { msg = "not a line number"; return; }
+    long want = std::atol(e.c_str());
+    if (want < 1) { msg = "not a line number"; return; }
+
+    Line *hf = nullptr;
+    int n = (int)std::min<long>(want - 1, INT_MAX - 1), hy = 0;
+    int left = n;
+    if (!nth_line(v.doc->root.get(), left, hf, hy))
+    {
+        msg = "line " + e + " is past the end (" + std::to_string(n - left) + " lines)";
+        return;
+    }
+    goto_fold(hf);
+    v.cy  = hy;
+    v.cx  = 0;
+    v.sel = false;
+}
+//}}}
+//{{{  exit_all
+// leave every fold and go to the top of the file
+void Editor::exit_all()
+{
+    goto_fold(v.doc->root.get());
+    v.cy = v.cx = 0;
+    v.sel = false;
 }
 //}}}
 //{{{  goto_fold
@@ -1072,6 +1121,7 @@ void Editor::handle(int k)
     if (k == K(KEY_PPAGE) || kn == "kRIT5") { exit_fold(); return; }
     if (k == CTRL('n'))    { create_fold(); return; }
     if (k == CTRL('u'))    { unfold(); return; }
+    if (k == CTRL('w'))    { exit_all(); return; }
     //}}}
     //{{{  editing
     if (k == '\r' || k == '\n' || k == K(KEY_ENTER)) { key_enter(); return; }
@@ -1101,7 +1151,7 @@ void Editor::handle(int k)
     if (k == CTRL('f'))     { find(true); return; }
     if (k == CTRL('g'))     { find(false); return; }
     if (k == CTRL('s'))     { save_doc(v.doc); return; }
-    if (k == CTRL('l'))     { clearok(curscr, TRUE); return; }
+    if (k == CTRL('l'))     { goto_line(); return; }
     if (k == 27)            { v.sel = false; return; }
     if (k == K(KEY_F(1)))   { help(); return; }
     if (k == K(KEY_F(10)))  { quit_all(); return; }
@@ -1208,9 +1258,12 @@ void Editor::render()
 }
 //}}}
 //{{{  prompt
-bool Editor::prompt(const std::string &label, ustr &text)
+// edit a line of text on the bottom row; with select, the initial text is
+// shown selected and the first character typed (or Backspace) replaces it
+bool Editor::prompt(const std::string &label, ustr &text, bool select)
 {
     int pos = (int)text.size();
+    if (text.empty()) select = false;
     ustr lab = decode(label);
     while (true)
     {
@@ -1220,13 +1273,19 @@ bool Editor::prompt(const std::string &label, ustr &text)
         attron(A_BOLD);
         addnwstr((const wchar_t *)std::wstring(lab.begin(), lab.end()).c_str(), (int)lab.size());
         attroff(A_BOLD);
+        if (select) attron(A_REVERSE);
         addnwstr((const wchar_t *)std::wstring(text.begin(), text.end()).c_str(), (int)text.size());
+        if (select) attroff(A_REVERSE);
         move(LINES - 1, (int)lab.size() + pos);
         refresh();
 
         int k = get_key();
         if (k == '\r' || k == '\n' || k == K(KEY_ENTER)) return true;
         if (k == 27 || k == CTRL('c') || k == CTRL('g')) return false;
+        bool typing = (k >= 32 && k < KB && k != 127) || k == K(PASTE_START);
+        bool erasing = k == 127 || k == 8 || k == K(KEY_BACKSPACE) || k == K(KEY_DC);
+        if (select && (typing || erasing)) { text.clear(); pos = 0; }
+        select = false;
         if (k == K(KEY_LEFT) && pos > 0) pos--;
         else if (k == K(KEY_RIGHT) && pos < (int)text.size()) pos++;
         else if (k == K(KEY_HOME)) pos = 0;
@@ -1325,6 +1384,7 @@ void Editor::help()
         "  Home / Ctrl+Left    enter fold, or open the file named in quotes on the line",
         "                      (Home elsewhere goes to the start of the line)",
         "  PgUp / Ctrl+Right   exit fold; at the top of a file go back, or quit",
+        "  Ctrl+W              exit all folds, to the top of the file",
         "  Ctrl+N              create fold (from the selected lines, or an empty one)",
         "  Ctrl+U              unfold",
         "",
@@ -1336,6 +1396,7 @@ void Editor::help()
         "  Shift+arrows        select            Esc      clear selection",
         "",
         "  Ctrl+F / Ctrl+G     find / find next (in this fold and folds inside it)",
+        "  Ctrl+L              go to a line by its number in the file",
         "  Ctrl+R / Ctrl+E     indent / outdent lines (selected, or all in fold)",
         "  Ctrl+D  date        Ctrl+T  fold title        Ctrl+A  find string",
         "  Ctrl+Z              undo",
