@@ -32,6 +32,7 @@ Needs a C++17 compiler and ncurses (`sudo apt install build-essential libncurses
 | Ctrl+Q | choose an earlier paste buffer |
 | Ctrl+F / Ctrl+G | find / find next, in this fold and the folds inside it |
 | Ctrl+L | go to a line by its number in the file on disk (fold markers count), entering folds on the way |
+| F12 / F9 | go to the definition of the name under the cursor, anywhere in the file / go back to where the last jump (F12, Ctrl+F, Ctrl+L or Ctrl+W) started |
 | Ctrl+R / Ctrl+E | indent / outdent lines (selected, or all in the fold) |
 | Ctrl+D, Ctrl+T, Ctrl+A | insert date, fold title, find string |
 | Ctrl+Z | undo |

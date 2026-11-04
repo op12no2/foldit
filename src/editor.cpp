@@ -845,6 +845,7 @@ void Editor::find(bool first)
         f    = f->parent;
     }
 
+    if (first) mark();
     goto_fold(hf);
     v.cy  = hy;
     v.sel = true;
@@ -887,6 +888,7 @@ void Editor::goto_line()
         msg = "line " + e + " is past the end (" + std::to_string(n - left) + " lines)";
         return;
     }
+    mark();
     goto_fold(hf);
     v.cy  = hy;
     v.cx  = 0;
@@ -897,6 +899,7 @@ void Editor::goto_line()
 // leave every fold and go to the top of the file
 void Editor::exit_all()
 {
+    mark();
     goto_fold(v.doc->root.get());
     v.cy = v.cx = 0;
     v.sel = false;
@@ -937,6 +940,158 @@ void Editor::move_to(int y, int x, bool extend)
     if (v.cy < 0) v.cy = 0;
     if (v.cx > disp_len(cur())) v.cx = disp_len(cur());
     if (v.cx < 0) v.cx = 0;
+}
+//}}}
+//{{{  mark back goto_def
+// Jumps (go to definition, find, go to line, exit all) remember where they
+// started, so F9 can go back there.  A mark holds an index path rather than a
+// Line pointer, as undo replaces the tree.
+void Editor::mark()
+{
+    auto &m = v.doc->marks;
+    m.push_back({path_of(v.fold), v.cy, v.cx});
+    if (m.size() > 50) m.erase(m.begin());
+}
+
+void Editor::back()
+{
+    auto &m = v.doc->marks;
+    if (m.empty()) { msg = "nowhere to go back to"; return; }
+    Doc::Mark k = m.back();
+    m.pop_back();
+    goto_fold(resolve(v.doc->root.get(), k.path));
+    move_to(k.cy, k.cx, false);
+}
+
+static bool is_word(char32_t c)
+{
+    return c == U'_' || (c < 128 ? isalnum((int)c) != 0 : !is_raw_byte(c));
+}
+
+static bool one_of(const ustr &w, const char *list)
+{
+    std::string e = encode(w);
+    for (const char *p = list; *p; p += strlen(p) + 1)
+        if (e == p) return true;
+    return false;
+}
+
+// How much the name at t[at, end) looks like a definition rather than a use:
+// 4 a definition keyword, or a function definition with its return type
+// 3 a variable with a type, a label, or a function definition without a type
+// 2 a declaration or prototype, or a plain assignment
+// 1 a parameter, or something weaker
+// 0 a use
+static int def_score(const ustr &t, size_t at, size_t end)
+{
+    size_t b = at;
+    while (b > 0 && t[b - 1] == U' ') b--;
+    size_t wb = b;
+    while (wb > 0 && is_word(t[wb - 1])) wb--;
+    ustr     before = t.substr(wb, b - wb);              //word before, if any
+    char32_t pc     = b > 0 ? t[b - 1] : 0;              //character before
+    ustr     op     = b >= 2 ? t.substr(b - 2, 2) : ustr();
+    size_t a = end;
+    while (a < t.size() && t[a] == U' ') a++;
+    char32_t nc  = a < t.size() ? t[a] : 0;              //character after
+    char32_t nc2 = a + 1 < t.size() ? t[a + 1] : 0;
+    ustr     tr  = trim(t);
+    char32_t last = tr.empty() ? 0 : tr.back();
+
+    //{{{  keywords
+    static const char defs[] = "def\0function\0class\0struct\0enum\0union\0interface\0fn\0func\0"
+                               "sub\0proc\0procedure\0define\0typedef\0namespace\0module\0macro\0"
+                               "let\0var\0const\0type\0PROC\0FUNCTION\0";
+    static const char uses[] = "return\0if\0while\0else\0for\0switch\0case\0new\0delete\0throw\0"
+                               "goto\0sizeof\0typeof\0await\0yield\0not\0and\0or\0in\0do\0"
+                               "print\0echo\0elif\0until\0unless\0";
+    if (one_of(before, defs))
+    {
+        if (before == U"const" && nc != U'=') return 0;           //const Foo &x: a use of Foo
+        return is_word(nc) || nc == U'*' || nc == U'&' ? 0 : 4;   //struct Foo bar: a use of Foo
+    }
+    if (one_of(before, uses)) return 0;
+    //}}}
+    //{{{  operators before it mean a use
+    if (op == U"->" || op == U"&&" || op == U"||" || op == U"==" || op == U"!=" ||
+        op == U"<=" || op == U">=" || op == U"+=" || op == U"-=" || op == U"<<" || op == U">>") return 0;
+    if (pc && ustr(U".(,=!|+-/?[<").find(pc) != ustr::npos) return 0;
+    //}}}
+    bool typed = !before.empty() || pc == U'*' || pc == U'&' || pc == U'>' || pc == U':' || pc == U'~';
+    if (nc == U'(')
+    {
+        if (last == U';') return typed ? 2 : 0;                   //prototype, or a call
+        if (typed) return 4;                                      //void foo(int x)
+        return pc ? 1 : (last == U'{' ? 3 : 1);                   //foo(a, b) {  (a method, or K&R)
+    }
+    if (nc == U'=' && nc2 != U'=') return typed ? 3 : (pc ? 1 : 2);
+    if (nc == U':' && nc2 != U':') return pc ? 1 : 3;             //label, or key
+    if (typed)
+    {
+        if (nc == U';' || nc == U'[' || nc == U'{' || nc == 0) return 3;
+        if (nc == U')' || nc == U',') return 1;
+    }
+    return 0;
+}
+
+// the best candidate under f, in document order, other than the one at
+// (skip, skip_at); folds whose title is the name count a little
+static void find_def(Line *f, const ustr &name, const Line *skip, size_t skip_at,
+                     int &best, Line *&hf, int &hy, int &hx)
+{
+    for (int i = 0; i < (int)f->kids.size(); i++)
+    {
+        Line *l = f->kids[i].get();
+        if (l->fold)
+        {
+            if (l != skip && best < 2 && trim(l->text) == name) { best = 2; hf = f; hy = i; hx = 0; }
+            find_def(l, name, skip, skip_at, best, hf, hy, hx);
+            continue;
+        }
+        const ustr &t = l->text;
+        for (size_t at = t.find(name); at != ustr::npos; at = t.find(name, at + 1))
+        {
+            size_t end = at + name.size();
+            if ((at > 0 && is_word(t[at - 1])) || (end < t.size() && is_word(t[end]))) continue;
+            if (l == skip && at == skip_at) continue;
+            int sc = def_score(t, at, end);
+            if (sc > best) { best = sc; hf = f; hy = i; hx = (int)at; }
+        }
+    }
+}
+
+// F12: go to where the name under the cursor is defined, anywhere in this file
+void Editor::goto_def()
+{
+    Line *l = cur();
+    ustr t = display(l);
+    size_t at = v.cx;
+    if ((at >= t.size() || !is_word(t[at])) && at > 0 && is_word(t[at - 1])) at--;
+    if (at >= t.size() || !is_word(t[at])) { msg = "no name under the cursor"; return; }
+    size_t a = at, b = at;
+    while (a > 0 && is_word(t[a - 1])) a--;
+    while (b < t.size() && is_word(t[b])) b++;
+    ustr name = t.substr(a, b - a);
+
+    //an equally good candidate elsewhere (e.g. an overload) is still worth a jump
+    int own = l->fold ? (trim(l->text) == name ? 2 : 0) : def_score(t, a, b);
+    int best = 0, hy = 0, hx = 0;
+    Line *hf = nullptr;
+    find_def(v.doc->root.get(), name, l, a, best, hf, hy, hx);
+    if (!hf || own > best)
+    {
+        msg = own ? "'" + encode(name) + "' is defined here"
+                  : "no definition of '" + encode(name) + "' in this file";
+        return;
+    }
+
+    mark();
+    goto_fold(hf);
+    v.cy  = hy;
+    v.sel = true;
+    v.sy  = hy;
+    v.sx  = hf->kids[hy]->fold ? title_start(hf->kids[hy].get()) : hx;
+    v.cx  = v.sx + (int)name.size();
 }
 //}}}
 //}}}
@@ -1152,6 +1307,8 @@ void Editor::handle(int k)
     if (k == CTRL('g'))     { find(false); return; }
     if (k == CTRL('s'))     { save_doc(v.doc); return; }
     if (k == CTRL('l'))     { goto_line(); return; }
+    if (k == K(KEY_F(12)))  { goto_def(); return; }
+    if (k == K(KEY_F(9)))   { back(); return; }
     if (k == 27)            { v.sel = false; return; }
     if (k == K(KEY_F(1)))   { help(); return; }
     if (k == K(KEY_F(10)))  { quit_all(); return; }
@@ -1397,6 +1554,8 @@ void Editor::help()
         "",
         "  Ctrl+F / Ctrl+G     find / find next (in this fold and folds inside it)",
         "  Ctrl+L              go to a line by its number in the file",
+        "  F12 / F9            go to the definition of the name under the cursor / go back",
+        "                      (F9 also goes back from Ctrl+F, Ctrl+L and Ctrl+W)",
         "  Ctrl+R / Ctrl+E     indent / outdent lines (selected, or all in fold)",
         "  Ctrl+D  date        Ctrl+T  fold title        Ctrl+A  find string",
         "  Ctrl+Z              undo",

@@ -20,6 +20,11 @@ struct Doc
         std::vector<int> path;      //fold the view was in
         int              cy, cx, top;
     };
+    struct Mark                     //where a jump started, for going back
+    {
+        std::vector<int> path;      //fold, as an index path (undo replaces the tree)
+        int              cy, cx;
+    };
 
     std::string     path;           //absolute
     std::string     name;           //as shown in the header
@@ -30,6 +35,7 @@ struct Doc
     bool            exists   = false;
     time_t          mtime    = 0;
     std::vector<Snapshot> undo;
+    std::vector<Mark>     marks;
 };
 //}}}
 //{{{  View
@@ -139,6 +145,9 @@ private:
     void exit_all();
     void goto_fold(Line *target);
     void move_to(int y, int x, bool extend);
+    void mark();
+    void back();
+    void goto_def();
     //}}}
     //{{{  clipboard
     void mirror(const Paste *p);
